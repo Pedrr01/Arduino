@@ -33,7 +33,7 @@ void loop() {
       ledStatus = 0;
     }
 
-    // Desliga todos os LEDs
+    // Desliga LED anterior
     desligarLedAnt();
 
     // Liga o LED correspondente ao índice atual
