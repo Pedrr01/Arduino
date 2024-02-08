@@ -1,0 +1,55 @@
+// Define os pinos onde os LEDs estão conectados
+const int leds[] = {6, 5, 7};
+// Define o pino onde o botão está conectado
+const int botao = 8;
+
+// Variáveis globais para armazenar o estado do botão e o índice do LED ligado
+int botaoStatus = 0;
+int ledStatus = 0;
+
+// Configuração inicial
+void setup() {
+  // Configura todos os pinos dos LEDs como saídas
+  for (int i = 0; i < sizeof(leds) / sizeof(leds[0]); i++) {
+    pinMode(leds[i], OUTPUT);
+  }
+  // Configura o pino do botão como entrada
+  pinMode(botao, INPUT);
+}
+
+// Loop principal
+void loop() {
+  // Lê o estado do botão
+  botaoStatus = digitalRead(botao);
+
+  // Se o botão estiver pressionado
+  if (botaoStatus == HIGH) {
+    // Pequeno atraso para evitar leituras falsas
+    delay(50);
+    // Avança para o próximo LED na sequência
+    ledStatus++;
+    // Se ultrapassou o último LED, volta ao primeiro
+    if (ledStatus >= sizeof(leds) / sizeof(leds[0])) {
+      ledStatus = 0;
+    }
+
+    // Desliga todos os LEDs
+    desligarLedAnt();
+
+    // Liga o LED correspondente ao índice atual
+    digitalWrite(leds[ledStatus], HIGH);
+
+    // Aguarda até que o botão seja solto
+    while (digitalRead(botao) == HIGH) {
+      delay(50);
+    }
+  }
+}
+
+// Função para desligar o LED anterior
+void desligarLedAnt() {
+  for (int i = 0; i < sizeof(leds) / sizeof(leds[0]); i++) {
+    // Define o estado do LED como desligado
+    digitalWrite(leds[i], LOW);
+  }
+}
